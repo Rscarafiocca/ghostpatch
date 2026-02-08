@@ -1,0 +1,53 @@
+{
+  "name": "ghostpatch",
+  "version": "1.0.0",
+  "description": "AI-powered security vulnerability scanner — like SonarQube but runs locally via npm with zero infrastructure. Uses free HuggingFace models by default.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "ghostpatch": "dist/cli/index.js",
+    "gp": "dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "start": "node dist/cli/index.js",
+    "scan": "node dist/cli/index.js scan",
+    "serve": "node dist/cli/index.js serve",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "security",
+    "scanner",
+    "vulnerability",
+    "sast",
+    "ai",
+    "sonarqube",
+    "owasp",
+    "mcp",
+    "static-analysis"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "commander": "^14.0.3",
+    "glob": "^13.0.1",
+    "micromatch": "^4.0.8",
+    "chokidar": "^4.0.3"
+  },
+  "optionalDependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "openai": "^4.80.0"
+  },
+  "devDependencies": {
+    "@types/micromatch": "^4.0.9",
+    "@types/node": "^22.12.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.2.4"
+  }
+}
