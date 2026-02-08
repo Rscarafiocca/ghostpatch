@@ -1,6 +1,17 @@
 # GhostPatch
 
-**AI-powered security vulnerability scanner** — like SonarQube but runs locally via npm with zero infrastructure setup.
+[![npm version](https://img.shields.io/npm/v/ghostpatch?color=cb3837&logo=npm)](https://www.npmjs.com/package/ghostpatch)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen?logo=node.js)](https://nodejs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript)](https://www.typescriptlang.org)
+[![Tests](https://img.shields.io/badge/tests-68%20passed-brightgreen?logo=vitest)](https://github.com/NeuralRays/ghostpatch)
+[![OWASP Top 10](https://img.shields.io/badge/OWASP-Top%2010-orange?logo=owasp)](https://owasp.org/www-project-top-ten/)
+[![Security Rules](https://img.shields.io/badge/rules-131%2B-purple)](https://github.com/NeuralRays/ghostpatch)
+[![Languages](https://img.shields.io/badge/languages-15-informational)](https://github.com/NeuralRays/ghostpatch)
+[![MCP](https://img.shields.io/badge/MCP-server-blueviolet)](https://github.com/NeuralRays/ghostpatch)
+[![AI Powered](https://img.shields.io/badge/AI-HuggingFace%20%7C%20Claude%20%7C%20GPT-ff6f00)](https://github.com/NeuralRays/ghostpatch)
+
+**AI-powered security vulnerability scanner** that runs locally via npm with zero infrastructure setup.
 
 Uses **HuggingFace free models by default** (zero cost), with optional **Anthropic Claude** and **OpenAI GPT** for deeper analysis. Includes CLI, library API, and MCP server for AI coding agent integration.
 
