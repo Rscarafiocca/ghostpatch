@@ -208,6 +208,67 @@ Professional standalone report with severity charts, finding details, and remedi
     sarif_file: results.sarif
 ```
 
+## Contributing
+
+We welcome contributions! Here's how to get involved:
+
+### Reporting Issues
+
+Found a bug or have a feature request? [Open an issue](https://github.com/NeuralRays/ghostpatch/issues/new) with:
+- A clear description of the problem or suggestion
+- Steps to reproduce (for bugs)
+- Expected vs actual behavior
+- Your environment (OS, Node.js version)
+
+### Submitting Pull Requests
+
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/my-feature`
+3. **Make** your changes and add tests
+4. **Run** tests: `npm test`
+5. **Build** to verify: `npm run build`
+6. **Commit** your changes: `git commit -m "Add my feature"`
+7. **Push** to your fork: `git push origin feature/my-feature`
+8. **Open** a [Pull Request](https://github.com/NeuralRays/ghostpatch/pulls) against `master`
+
+### Development Setup
+
+```bash
+git clone https://github.com/NeuralRays/ghostpatch.git
+cd ghostpatch
+npm install
+npm run build
+npm test
+```
+
+### What We're Looking For
+
+- New security detection rules and patterns
+- Support for additional programming languages
+- Improved AI prompt engineering for better analysis
+- Bug fixes and false positive reductions
+- Documentation improvements
+- CI/CD integration examples
+
+### Code of Conduct
+
+Please be respectful and constructive in all interactions. We are committed to providing a welcoming and inclusive experience for everyone.
+
+## Security
+
+If you discover a security vulnerability within GhostPatch, please report it responsibly by emailing **neuralsoft@injectedsecurity.pro** instead of opening a public issue.
+
+## Creator & Maintainer
+
+**NeuralRays** — [GitHub](https://github.com/NeuralRays) | [neuralsoft@injectedsecurity.pro](mailto:neuralsoft@injectedsecurity.pro)
+
 ## License
 
-MIT
+MIT License — see [LICENSE](LICENSE) for details.
+
+---
+
+<p align="center">
+  <strong>GhostPatch</strong> — Scan. Detect. Secure.<br>
+  <sub>Built with TypeScript. Powered by AI.</sub>
+</p>
