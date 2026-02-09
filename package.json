@@ -1,7 +1,7 @@
 {
   "name": "ghostpatch",
-  "version": "1.0.0",
-  "description": "AI-powered security vulnerability scanner — like SonarQube but runs locally via npm with zero infrastructure. Uses free HuggingFace models by default.",
+  "version": "1.0.1",
+  "description": "AI-powered security vulnerability scanner that runs locally via npm with zero infrastructure. Uses free HuggingFace models by default.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -29,7 +29,15 @@
     "mcp",
     "static-analysis"
   ],
-  "author": "",
+  "author": "NeuralRays <neuralsoft@injectedsecurity.pro>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NeuralRays/ghostpatch.git"
+  },
+  "homepage": "https://github.com/NeuralRays/ghostpatch",
+  "bugs": {
+    "url": "https://github.com/NeuralRays/ghostpatch/issues"
+  },
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0"
@@ -41,8 +49,8 @@
     "chokidar": "^4.0.3"
   },
   "optionalDependencies": {
-    "@anthropic-ai/sdk": "^0.39.0",
-    "openai": "^4.80.0"
+    "@anthropic-ai/sdk": "^0.74.0",
+    "openai": "^6.18.0"
   },
   "devDependencies": {
     "@types/micromatch": "^4.0.9",
