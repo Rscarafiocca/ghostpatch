@@ -1,6 +1,7 @@
 # GhostPatch
 
 [![npm version](https://img.shields.io/npm/v/ghostpatch?color=cb3837&logo=npm)](https://www.npmjs.com/package/ghostpatch)
+[![GitHub release](https://img.shields.io/github/v/release/NeuralRays/ghostpatch?logo=github)](https://github.com/NeuralRays/ghostpatch/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen?logo=node.js)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript)](https://www.typescriptlang.org)
